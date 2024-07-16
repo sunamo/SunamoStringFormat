@@ -1,11 +1,10 @@
 namespace SunamoStringFormat._sunamo;
 
-
-internal class CASH
+internal class CA
 {
     internal static Object[] ConvertListStringWrappedInArray(Object[] innerMain)
     {
-        if (CASE.IsListStringWrappedInArray(innerMain))
+        if (SunamoExceptions.InSunamoIsDerivedFrom.CA.IsListStringWrappedInArray(innerMain))
         {
             List<object> result = null;
             var first = (IEnumerable)innerMain[0];

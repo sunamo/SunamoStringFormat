@@ -1,4 +1,5 @@
 namespace SunamoStringFormat;
+
 public class SHFormat
 {
     /// <summary>
@@ -21,7 +22,7 @@ public class SHFormat
     {
         //ThrowEx.PassedListInsteadOfArray(nameof(args), args);
 
-        ////args = CASH.ConvertListStringWrappedInArray(args);
+        ////args = CA.ConvertListStringWrappedInArray(args);
 
         var result = Format2(templateHandler, args);
         const string replacement = "{        }";
@@ -46,7 +47,7 @@ public class SHFormat
     {
         //ThrowEx.PassedListInsteadOfArray(status, args);
 
-        //args = CASH.ConvertListStringWrappedInArray(args);
+        //args = CA.ConvertListStringWrappedInArray(args);
 
         if (string.IsNullOrWhiteSpace(status))
         {
@@ -85,7 +86,7 @@ public class SHFormat
     {
         //ThrowEx.PassedListInsteadOfArray(nameof(args), args);
 
-        //args = CASH.ConvertListStringWrappedInArray(args);
+        //args = CA.ConvertListStringWrappedInArray(args);
 
         // this was original implementation but dont know why isnt used string.format
         for (int i = 0; i < args.Length; i++)
@@ -109,7 +110,7 @@ public class SHFormat
     {
         //ThrowEx.PassedListInsteadOfArray(nameof(innerMain), innerMain);
 
-        innerMain = CASH.ConvertListStringWrappedInArray(innerMain);
+        innerMain = _sunamo.SunamoExceptions.InSunamoIsDerivedFrom.CA.ConvertListStringWrappedInArray(innerMain);
 
         string formatted = null;
 
@@ -154,7 +155,7 @@ public class SHFormat
     {
         //ThrowEx.PassedListInsteadOfArray(nameof(o), o);
 
-        o = CASH.ConvertListStringWrappedInArray(o);
+        o = _sunamo.SunamoExceptions.InSunamoIsDerivedFrom.CA.ConvertListStringWrappedInArray(o);
 
         return string.Format(v, o);
     }
@@ -171,7 +172,7 @@ public class SHFormat
     {
         //ThrowEx.PassedListInsteadOfArray(nameof(args), args);
 
-        ////args = CASH.ConvertListStringWrappedInArray(args);
+        ////args = CA.ConvertListStringWrappedInArray(args);
 
         // this was original implementation but dont know why isnt used string.format
         for (int i = 0; i < args.Length; i++)
