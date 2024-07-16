@@ -16,6 +16,9 @@
   <ItemGroup>
     <None Include="readme.md" Pack="True" PackagePath="." />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="_sunamo\SunamoExceptions\InSunamoIsDerivedFrom\" />
+  </ItemGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>$(DefineConstants);SunamoStringFormat;SunamoStringFormat.csproj</DefineConstants>
   </PropertyGroup>

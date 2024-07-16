@@ -110,7 +110,7 @@ public class SHFormat
     {
         //ThrowEx.PassedListInsteadOfArray(nameof(innerMain), innerMain);
 
-        innerMain = _sunamo.SunamoExceptions.InSunamoIsDerivedFrom.CA.ConvertListStringWrappedInArray(innerMain);
+        innerMain = CA.ConvertListStringWrappedInArray(innerMain);
 
         string formatted = null;
 
@@ -155,7 +155,7 @@ public class SHFormat
     {
         //ThrowEx.PassedListInsteadOfArray(nameof(o), o);
 
-        o = _sunamo.SunamoExceptions.InSunamoIsDerivedFrom.CA.ConvertListStringWrappedInArray(o);
+        o = CA.ConvertListStringWrappedInArray(o);
 
         return string.Format(v, o);
     }
