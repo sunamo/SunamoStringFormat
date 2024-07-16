@@ -11,3 +11,4 @@ global using SunamoStringFormat._sunamo.SunamoValues;
 global using SunamoStringFormat._sunamo.SunamoExceptions.OnlyInSE;
 global using System.Diagnostics;
 global using System.Net;
+global using SunamoStringFormat._sunamo;
