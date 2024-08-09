@@ -10,17 +10,12 @@ internal class SHReplace
             var to2 = SHSplit.SplitMore(zaCo, Environment.NewLine);
             ThrowEx.DifferentCountInLists("from2", from2, "to2", to2);
 
-            for (int i = 0; i < from2.Count; i++)
-            {
-                vstup = ReplaceAll2(vstup, to2[i], from2[i]);
-            }
+            for (var i = 0; i < from2.Count; i++) vstup = ReplaceAll2(vstup, to2[i], from2[i]);
 
             return vstup;
         }
-        else
-        {
-            return ReplaceAll2(vstup, zaCo, co);
-        }
+
+        return ReplaceAll2(vstup, zaCo, co);
     }
 
     internal static string ReplaceAll2(string vstup, string zaCo, string co)
