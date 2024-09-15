@@ -12,3 +12,5 @@ global using SunamoStringFormat._sunamo.SunamoExceptions.OnlyInSE;
 global using System.Diagnostics;
 global using System.Net;
 global using SunamoStringFormat._sunamo;
+global using SunamoStringFormat;
+global using SunamoStringFormat._sunamo.SunamoStringGetLines;
