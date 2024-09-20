@@ -41,10 +41,6 @@ public class SHFormat
     /// <returns></returns>
     public static string Format2(string status, params object[] args)
     {
-        //ThrowEx.PassedListInsteadOfArray(status, args);
-
-        //args = CA.ConvertListStringWrappedInArray(args);
-
         if (string.IsNullOrWhiteSpace(status)) return string.Empty;
 
         if (status.Contains(AllChars.lcub) && !status.Contains("{0}")) return status;
@@ -120,6 +116,7 @@ public class SHFormat
     }
 
     /// <summary>
+    /// 
     ///     Don't allow format when there is unfinished {
     ///     Format - use string.Format with error checking, as only one can be use wich { } [ ] chars in text
     ///     Format2 - use string.Format with error checking
