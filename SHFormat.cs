@@ -100,7 +100,7 @@ public class SHFormat
         }
         catch (Exception ex)
         {
-            ThrowEx.DummyNotThrow(ex);
+            ThrowEx.Custom(ex);
         }
 
         try
@@ -109,7 +109,7 @@ public class SHFormat
         }
         catch (Exception ex)
         {
-            ThrowEx.DummyNotThrow(ex);
+            ThrowEx.Custom(ex);
         }
 
         return formatted;
