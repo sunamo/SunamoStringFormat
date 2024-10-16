@@ -24,8 +24,8 @@ public class SHFormat
         var result = Format2(templateHandler, args);
         const string replacement = "{        }";
         result = SHReplace.ReplaceAll2(result, replacement, "[]");
-        result = SHReplace.ReplaceAll2(result, AllStrings.lcub, lsf);
-        result = SHReplace.ReplaceAll2(result, AllStrings.rcub, rsf);
+        result = SHReplace.ReplaceAll2(result, "{", lsf);
+        result = SHReplace.ReplaceAll2(result, "}", rsf);
         result = SHReplace.ReplaceAll2(result, replacement, "{}");
         //result = Format4(result, args);
 
@@ -43,7 +43,7 @@ public class SHFormat
     {
         if (string.IsNullOrWhiteSpace(status)) return string.Empty;
 
-        if (status.Contains(AllChars.lcub) && !status.Contains("{0}")) return status;
+        if (status.Contains('{') && !status.Contains("{0}")) return status;
 
         try
         {
@@ -74,7 +74,7 @@ public class SHFormat
 
         // this was original implementation but dont know why isnt used string.format
         for (var i = 0; i < args.Length; i++)
-            template = SHReplace.ReplaceAll2(template, args[i].ToString(), AllStrings.lcub + i + AllStrings.rcub);
+            template = SHReplace.ReplaceAll2(template, args[i].ToString(), "{" + i + "}");
         return template;
     }
 

@@ -5,7 +5,7 @@ global using System.Collections;
 global using System.IO;
 global using System.Linq;
 global using SunamoStringFormat._sunamo.SunamoStringReplace;
-global using SunamoStringFormat._sunamo.SunamoValues;
+global using SunamoStringFormat;
 global using SunamoStringFormat._sunamo.SunamoExceptions;
 global using System.Diagnostics;
 global using SunamoStringFormat._sunamo;
