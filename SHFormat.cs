@@ -18,6 +18,7 @@ public class SHFormat
     /// <param name="value"></param>
     public static string Format(string templateHandler, string lsf, string rsf, params object[] args)
     {
+
         //ThrowEx.PassedListInsteadOfArray(nameof(args), args);
         ////args = CA.ConvertListStringWrappedInArray(args);
 
