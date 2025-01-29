@@ -11,11 +11,6 @@ internal partial class ThrowEx
         string? str = Exceptions.Custom(FullNameOfExecutedCode(), joined);
         return ThrowIsNotNull(str, reallyThrow);
     }
-    internal static bool DifferentCountInLists<T>(string namefc, IList<T> countfc, string namesc, IList<T> countsc)
-    {
-        return ThrowIsNotNull(
-            Exceptions.DifferentCountInLists(FullNameOfExecutedCode(), namefc, countfc.Count, namesc, countsc.Count));
-    }
 
     internal static bool ExcAsArg(Exception ex, string message = "")
     { return ThrowIsNotNull(Exceptions.ExcAsArg, ex, message); }
