@@ -1,6 +1,9 @@
 namespace sunamo.Tests.Helpers.Text;
 public partial class SHTests
 {
+    const string lcub = "{";
+    const string rcub = "}";
+
     /// <summary>
     /// due to { on end, can be formatted with Format3 only
     /// </summary>
