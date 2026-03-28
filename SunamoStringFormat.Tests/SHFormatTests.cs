@@ -1,11 +1,15 @@
-namespace sunamo.Tests.Helpers.Text;
-public partial class SHTests
+namespace SunamoStringFormat.Tests;
+
+/// <summary>
+/// Tests for <see cref="SHFormat"/> formatting methods.
+/// </summary>
+public class SHFormatTests
 {
-    const string lcub = "{";
-    const string rcub = "}";
+    const string leftCurlyBrace = "{";
+    const string rightCurlyBrace = "}";
 
     /// <summary>
-    /// due to { on end, can be formatted with Format3 only
+    /// Due to { at end, can only be formatted with Format3.
     /// </summary>
     const string formatTemplate = @"export default class {0} extends Component {";
     const string formatExpected = @"export default class a extends Component {";
@@ -21,117 +25,75 @@ public partial class SHTests
     const string formatTemplateSimple = @"export default class {0}";
     const string formatTemplateSimpleExpected = @"export default class a";
 
-
-
-
-
     /// <summary>
-    /// Don't allow format when there is unfinished {
+    /// Tests Format method which does not allow formatting when there is unfinished {.
     /// </summary>
     [Fact]
     public void FormatTest()
     {
-        // POKUD BYCH ZDE PŘIDÁVAL DALŠÍ NA lsqb / rsqb, PŘIDAT PRO NĚ ŘÁDKY. UŽ TYTO JSEM MĚNIL ZE lsqb na lcub
-
-        // Cant be - { on end
-        //var actual = SHFormat.Format(formatTemplate, lcub, rcub, TestData.a);
-        //Assert.Equal(formatExpected, actual);
-
-        // Multiline strings is not allowd
-        //var actual = SHFormat.Format(formatTemplateMultiline, lcub, rcub, TestData.listABC.ToArray());
-        //Assert.Equal(formatTemplateMultilineExpected, actual);
-
-        var actual = SHFormat.Format(formatTemplateSimple, lcub, rcub, "a");
+        var actual = SHFormat.Format(formatTemplateSimple, leftCurlyBrace, rightCurlyBrace, "a");
         Assert.Equal(formatTemplateSimpleExpected, actual);
     }
 
     /// <summary>
-    /// Don't allow format when there is unfinished {
+    /// Tests Format2 method which does not allow formatting when there is unfinished {.
     /// </summary>
     [Fact]
     public void Format2Test()
     {
-        // POKUD BYCH ZDE PŘIDÁVAL DALŠÍ NA lsqb / rsqb, PŘIDAT PRO NĚ ŘÁDKY. UŽ TYTO JSEM MĚNIL ZE lsqb na lcub
-
-        // Cant be - { on end
-        //var actual = SHFormat.Format2(formatTemplate, TestData.a);
-        //Assert.Equal(formatExpected, actual);
-
-
-        // cant be
-        //var actual = SHFormat.Format2(formatTemplateMultiline, TestData.listABC);
-        //Assert.Equal(formatTemplateMultilineExpected, actual);
-
         var actual = SHFormat.Format2(formatTemplateSimple, "a");
         Assert.Equal(formatTemplateSimpleExpected, actual);
     }
 
     /// <summary>
-    /// ALLOW format when there is unfinished {
+    /// Tests Format3 method which ALLOWS formatting when there is unfinished {.
     /// </summary>
     [Fact]
     public void Format3Test()
     {
-        // POKUD BYCH ZDE PŘIDÁVAL DALŠÍ NA lsqb / rsqb, PŘIDAT PRO NĚ ŘÁDKY. UŽ TYTO JSEM MĚNIL ZE lsqb na lcub
-
         var actual = SHFormat.Format3(formatTemplate, TestData.a);
         Assert.Equal(formatExpected, actual);
 
         actual = SHFormat.Format3(formatTemplate, TestData.wildcard);
         Assert.Equal(formatExpectedWildcard, actual);
 
-        actual = SHFormat.Format3(formatTemplateMultiline, TestData.listABC);
+        actual = SHFormat.Format3(formatTemplateMultiline, TestData.listABC.ToArray());
         Assert.Equal(formatTemplateMultilineExpected, actual);
     }
 
+    /// <summary>
+    /// Tests Format34 method which attempts both Format4 and Format3.
+    /// </summary>
     [Fact]
     public void Format34Test()
     {
-        // POKUD BYCH ZDE PŘIDÁVAL DALŠÍ NA lsqb / rsqb, PŘIDAT PRO NĚ ŘÁDKY. UŽ TYTO JSEM MĚNIL ZE lsqb na lcub
-
-        //var actual = SHFormat.Format34(formatTemplate, TestData.a);
-        //Assert.Equal(formatExpected, actual);
-
-        //actual = SHFormat.Format34(formatTemplate, TestData.wildcard);
-        //Assert.Equal(formatExpectedWildcard, actual);
-
         var actual = SHFormat.Format34(formatTemplateMultiline, TestData.listABC);
         Assert.Equal(formatTemplateMultilineExpected, actual);
     }
 
     /// <summary>
-    /// Don't allow format when there is unfinished {
+    /// Tests Format4 method which does not allow formatting when there is unfinished {.
     /// </summary>
     [Fact]
     public void Format4Test()
     {
-        // POKUD BYCH ZDE PŘIDÁVAL DALŠÍ NA lsqb / rsqb, PŘIDAT PRO NĚ ŘÁDKY. UŽ TYTO JSEM MĚNIL ZE lsqb na lcub
-
-        // Cant be - { on end
-        //var actual = SHFormat.Format4(formatTemplate, TestData.a);
-        //Assert.Equal(formatExpected, actual);
-
-
-        // Cant be - multiline
-        //actual = SHFormat.Format4(formatTemplateMultiline, lcub, rcub, TestData.listABC);
-        //Assert.Equal(formatTemplateMultilineExpected, actual);
-
         var actual = SHFormat.Format4(formatTemplateSimple, "a");
         Assert.Equal(formatTemplateSimpleExpected, actual);
     }
 
+    /// <summary>
+    /// Tests Format5 method which manually replaces custom-bracketed placeholders.
+    /// </summary>
     [Fact]
     public void Format5Test()
     {
-        // POKUD BYCH ZDE PŘIDÁVAL DALŠÍ NA lsqb / rsqb, PŘIDAT PRO NĚ ŘÁDKY. UŽ TYTO JSEM MĚNIL ZE lsqb na lcub
-
-        var actual = SHFormat.Format5(formatTemplate, lcub, rcub, TestData.a);
+        var actual = SHFormat.Format5(formatTemplate, leftCurlyBrace, rightCurlyBrace, TestData.a);
         Assert.Equal(formatExpected, actual);
 
-        actual = SHFormat.Format5(formatTemplate, lcub, rcub, TestData.wildcard);
+        actual = SHFormat.Format5(formatTemplate, leftCurlyBrace, rightCurlyBrace, TestData.wildcard);
         Assert.Equal(formatExpectedWildcard, actual);
 
-        actual = SHFormat.Format5(formatTemplateMultiline, lcub, rcub, TestData.listABC.ToArray());
+        actual = SHFormat.Format5(formatTemplateMultiline, leftCurlyBrace, rightCurlyBrace, TestData.listABC.ToArray());
         Assert.Equal(formatTemplateMultilineExpected, actual);
     }
 }

@@ -1,164 +1,131 @@
 namespace SunamoStringFormat;
 
+/// <summary>
+/// Provides multiple string formatting methods that support custom bracket characters and error handling.
+/// </summary>
 public class SHFormat
 {
     /// <summary>
-    ///     Don't allow format when there is unfinished {
-    ///     Format - use string.Format with error checking, as only one can be use wich { } [ ] chars in text
-    ///     Format2 - use string.Format with error checking
-    ///     Format3 - Replace {x} with my code. Can be used with wildcard
-    ///     Format4 - use string.Format without error checking
-    ///     Cannot be use on existing code - will corrupt them
+    /// Formats a template string using <see cref="Format2"/>, then replaces standard curly braces with custom separators.
+    /// Cannot be used when template contains unfinished curly braces.
     /// </summary>
-    /// <param name="templateHandler"></param>
-    /// <param name="lsf"></param>
-    /// <param name="rsf"></param>
-    /// <param name="id"></param>
-    /// <param name="key"></param>
-    /// <param name="value"></param>
-    public static string Format(string templateHandler, string lsf, string rsf, params object[] args)
+    /// <param name="template">The format template string.</param>
+    /// <param name="leftSeparator">The custom left separator to replace '{' with.</param>
+    /// <param name="rightSeparator">The custom right separator to replace '}' with.</param>
+    /// <param name="args">The format arguments.</param>
+    /// <returns>The formatted string with custom separators.</returns>
+    public static string Format(string template, string leftSeparator, string rightSeparator, params object[] args)
     {
-
-        //ThrowEx.PassedListInsteadOfArray(nameof(args), args);
-        ////args = CA.ConvertListStringWrappedInArray(args);
-
-        var result = Format2(templateHandler, args);
+        var result = Format2(template, args);
         const string replacement = "{        }";
         result = SHReplace.ReplaceAll2(result, replacement, "[]");
-        result = SHReplace.ReplaceAll2(result, "{", lsf);
-        result = SHReplace.ReplaceAll2(result, "}", rsf);
+        result = SHReplace.ReplaceAll2(result, "{", leftSeparator);
+        result = SHReplace.ReplaceAll2(result, "}", rightSeparator);
         result = SHReplace.ReplaceAll2(result, replacement, "{}");
-        //result = Format4(result, args);
 
         return result;
     }
 
     /// <summary>
-    ///     Don't allow format when there is unfinished {
-    ///     Usage: Exc.WrongCountInList2
+    /// Formats a template string using <see cref="string.Format(string, object[])"/> with error checking.
+    /// Does not allow formatting when template contains unfinished curly braces without indexed placeholders.
     /// </summary>
-    /// <param name="status"></param>
-    /// <param name="args"></param>
-    /// <returns></returns>
-    public static string Format2(string status, params object[] args)
+    /// <param name="template">The format template string.</param>
+    /// <param name="args">The format arguments.</param>
+    /// <returns>The formatted string, or the original template if formatting is not applicable.</returns>
+    public static string Format2(string template, params object[] args)
     {
-        if (string.IsNullOrWhiteSpace(status)) return string.Empty;
+        if (string.IsNullOrWhiteSpace(template)) return string.Empty;
 
-        if (status.Contains('{') && !status.Contains("{0}")) return status;
+        if (template.Contains('{') && !template.Contains("{0}")) return template;
 
         try
         {
-            return string.Format(status, args);
+            return string.Format(template, args);
         }
-        catch (Exception ex)
+        catch (Exception exception)
         {
-            ThrowEx.ExcAsArg(ex);
-            return status;
+            ThrowEx.ExcAsArg(exception);
+            return template;
         }
     }
 
     /// <summary>
-    ///     Multiline: yes
-    ///     Format - use string.Format with error checking, as only one can be use wich { } [ ] chars in text
-    ///     Format2 - use string.Format with error checking
-    ///     Format3 - Replace {x} with my code. Can be used with wildcard
-    ///     Format4 - use string.Format without error checking
-    ///     Manually replace every {i}
+    /// Formats a template string by manually replacing each {i} placeholder with the corresponding argument.
+    /// Supports multiline templates and can be used with wildcard characters.
     /// </summary>
-    /// <param name="template"></param>
-    /// <param name="args"></param>
+    /// <param name="template">The format template string containing {0}, {1}, etc. placeholders.</param>
+    /// <param name="args">The format arguments to substitute into the template.</param>
+    /// <returns>The formatted string with all placeholders replaced.</returns>
     public static string Format3(string template, params object[] args)
     {
-        //ThrowEx.PassedListInsteadOfArray(nameof(args), args);
-
-        //args = CA.ConvertListStringWrappedInArray(args);
-
-        // this was original implementation but dont know why isnt used string.format
         for (var i = 0; i < args.Length; i++)
-            template = SHReplace.ReplaceAll2(template, args[i].ToString(), "{" + i + "}");
+            template = SHReplace.ReplaceAll2(template, args[i].ToString() ?? string.Empty, "{" + i + "}");
         return template;
     }
 
     /// <summary>
-    ///     Multiline: yes
-    ///     Throw no exceptions => Dummy
-    ///     params cant be object - ConvertListStringWrappedInArray would like to cast into List<object> from List<string>
+    /// Formats a template string by attempting both <see cref="Format4"/> and <see cref="Format3"/>, suppressing exceptions.
+    /// Supports multiline templates.
     /// </summary>
-    /// <param name="c"></param>
-    /// <param name="innerMain"></param>
-    /// <returns></returns>
-    public static string Format34(string c, params object[] innerMain)
+    /// <param name="template">The format template string.</param>
+    /// <param name="args">The format arguments.</param>
+    /// <returns>The formatted string, or the original template if both formatting attempts fail.</returns>
+    public static string Format34(string template, params object[] args)
     {
-        //ThrowEx.PassedListInsteadOfArray(nameof(innerMain), innerMain);
+        args = CA.ConvertListStringWrappedInArray(args);
 
-        innerMain = CA.ConvertListStringWrappedInArray(innerMain);
-
-        string formatted = null;
+        string result = template;
 
         try
         {
-            formatted = Format4(c, innerMain);
+            result = Format4(template, args);
         }
-        catch (Exception ex)
+        catch (Exception exception)
         {
-            ThrowEx.Custom(ex);
+            ThrowEx.Custom(exception, isReallyThrowing: false);
         }
 
         try
         {
-            formatted = Format3(c, innerMain);
+            result = Format3(template, args);
         }
-        catch (Exception ex)
+        catch (Exception exception)
         {
-            ThrowEx.Custom(ex);
+            ThrowEx.Custom(exception, isReallyThrowing: false);
         }
 
-        return formatted;
+        return result;
     }
 
     /// <summary>
-    /// 
-    ///     Don't allow format when there is unfinished {
-    ///     Format - use string.Format with error checking, as only one can be use wich { } [ ] chars in text
-    ///     Format2 - use string.Format with error checking
-    ///     Format3 - Replace {x} with my code. Can be used with wildcard
-    ///     Format4 - use string.Format without error checking
-    ///     Call string.Format, nothing more
-    ///     use for special string formatting like {0:X2}
+    /// Formats a template string using <see cref="string.Format(string, object[])"/> without error checking.
+    /// Useful for special string formatting patterns like {0:X2}.
     /// </summary>
-    /// <param name="v"></param>
-    /// <param name="a"></param>
-    /// <param name="r"></param>
-    /// <param name="g"></param>
-    /// <param name="b"></param>
-    public static string Format4(string v, params object[] o)
+    /// <param name="template">The format template string.</param>
+    /// <param name="args">The format arguments.</param>
+    /// <returns>The formatted string.</returns>
+    public static string Format4(string template, params object[] args)
     {
-        //ThrowEx.PassedListInsteadOfArray(nameof(o), o);
+        args = CA.ConvertListStringWrappedInArray(args);
 
-        o = CA.ConvertListStringWrappedInArray(o);
-
-        return string.Format(v, o);
+        return string.Format(template, args);
     }
 
     /// <summary>
-    ///     Multiline: yes
+    /// Formats a template string by manually replacing custom-bracketed placeholders with the corresponding arguments.
+    /// Supports multiline templates and custom left/right separators instead of curly braces.
     /// </summary>
-    /// <param name="templateHandler"></param>
-    /// <param name="lsf"></param>
-    /// <param name="rsf"></param>
-    /// <param name="args"></param>
-    /// <returns></returns>
-    public static string Format5(string templateHandler, string lsf, string rsf, params object[] args)
+    /// <param name="template">The format template string.</param>
+    /// <param name="leftSeparator">The custom left separator used in placeholders.</param>
+    /// <param name="rightSeparator">The custom right separator used in placeholders.</param>
+    /// <param name="args">The format arguments to substitute into the template.</param>
+    /// <returns>The formatted string with all custom placeholders replaced.</returns>
+    public static string Format5(string template, string leftSeparator, string rightSeparator, params object[] args)
     {
-        //ThrowEx.PassedListInsteadOfArray(nameof(args), args);
-
-        ////args = CA.ConvertListStringWrappedInArray(args);
-
-        // this was original implementation but dont know why isnt used string.format
         for (var i = 0; i < args.Length; i++)
-            templateHandler = SHReplace.ReplaceAll2(templateHandler, args[i].ToString(), lsf + i + rsf);
+            template = SHReplace.ReplaceAll2(template, args[i].ToString() ?? string.Empty, leftSeparator + i + rightSeparator);
 
-
-        return templateHandler;
+        return template;
     }
 }
