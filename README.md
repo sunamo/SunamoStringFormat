@@ -1,5 +1,10 @@
 # SunamoStringFormat
 
+## Short description
+
+Knihovna pro formátování řetězců s jinými znaky než {} pro objekty. Obsahuje Runner a testy.
+
+
 Format strings with characters other than {} for objects
 
 ## Overview
